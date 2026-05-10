@@ -18,7 +18,7 @@ module.exports = async (req, res) => {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
+        model: 'claude-sonnet-4-5',
         max_tokens: 1000,
         system: 'あなたは株式会社DorVisionのAIアシスタントです。SNS運用・Web制作・動画制作・企業ブランディング支援について丁寧に案内してください。和歌山県を拠点とする会社です。最終的にはお問い合わせページ（https://dorvision.co.jp/contact）への誘導をしてください。',
         messages: req.body.messages
