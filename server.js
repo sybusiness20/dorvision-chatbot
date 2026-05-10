@@ -1,5 +1,3 @@
-
-
 module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -27,8 +25,11 @@ module.exports = async (req, res) => {
       })
     });
     const data = await response.json();
+    if (!data.content || !data.content[0]) {
+      return res.status(500).json({ error: JSON.stringify(data) });
+    }
     res.json({ reply: data.content[0].text });
   } catch (error) {
-    res.status(500).json({ error: 'エラーが発生しました' });
+    res.status(500).json({ error: error.message });
   }
 };
