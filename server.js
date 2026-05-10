@@ -1,14 +1,16 @@
 require('dotenv').config();
-const express = require('express');
-const cors = require('cors');
-const path = require('path');
 
-const app = express();
-app.use(cors());
-app.use(express.json());
-app.use(express.static(path.join(__dirname)));
+module.exports = async (req, res) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-app.post('/api/chat', async (req, res) => {
+  if (req.method === 'OPTIONS') return res.status(200).end();
+
+  if (req.method !== 'POST') {
+    return res.status(404).json({ error: 'Not found' });
+  }
+
   try {
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
@@ -29,16 +31,4 @@ app.post('/api/chat', async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: 'エラーが発生しました' });
   }
-});
-
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
-});
-
-module.exports = app;
-
-if (require.main === module) {
-  app.listen(3000, () => {
-    console.log('サーバーが起動しました: http://localhost:3000');
-  });
-}
+};
