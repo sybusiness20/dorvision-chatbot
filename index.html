@@ -45,9 +45,13 @@ var typing=addMessage('入力中...','bot');
 try{
 var res=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:messages})});
 var data=await res.json();
+if(data.reply){
 typing.textContent=data.reply;
 messages.push({role:'assistant',content:data.reply});
-}catch(e){typing.textContent='エラーが発生しました。';}
+}else{
+typing.textContent='エラー: '+JSON.stringify(data);
+}
+}catch(e){typing.textContent='エラー: '+e.message;}
 }
 function addMessage(text,type){
 var div=document.createElement('div');
